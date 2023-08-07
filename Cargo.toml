@@ -3,7 +3,15 @@ name = "terminal_chat"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+authors = ["Ituski <2018.itsuki@gmail.com>"]
+description = "A terminal chat tool using openAI."
+readme = "README.md"
+homepage = "https://github.com/0Itsuki0/terminal-chat"
+repository = "https://github.com/0Itsuki0/terminal-chat"
+keywords = ["cli", "chat", "openAIai"]
+categories = ["command-line-utilities"]
+
+
 
 [dependencies]
 crossterm = "0.26.1"
