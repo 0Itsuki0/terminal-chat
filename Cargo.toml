@@ -2,7 +2,7 @@
 name = "terminal_chat"
 version = "0.1.0"
 edition = "2021"
-
+license = "MIT OR Apache-2.0"
 authors = ["Ituski <2018.itsuki@gmail.com>"]
 description = "A terminal chat tool using openAI."
 readme = "README.md"
