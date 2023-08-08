@@ -59,6 +59,7 @@ impl OpenAIClient {
 
     fn parse_response_body_string(s: &str) -> Result<String, Box<dyn Error>> {
         let v: Value = serde_json::from_str(s)?;
+        println!("{}", v);
         let mut content: String = String::from(v["choices"][0]["message"]["content"].as_str().unwrap());
         content = content.replace("\n", "\n\r");
         return Ok(content);   
