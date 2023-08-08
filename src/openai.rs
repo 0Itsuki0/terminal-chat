@@ -1,8 +1,8 @@
-use reqwest::{Client, Response, header::HeaderMap, Url};
+use reqwest::{Client,header::HeaderMap, Url};
 use reqwest::header::{HeaderValue, AUTHORIZATION, CONTENT_TYPE};
 use serde_json::Value;
 
-use std::{io::{Write, stdout, Stdout}, error::Error};
+use std::error::Error;
 use core::result::Result;
 use std::env;
 
@@ -59,10 +59,13 @@ impl OpenAIClient {
 
     fn parse_response_body_string(s: &str) -> Result<String, Box<dyn Error>> {
         let v: Value = serde_json::from_str(s)?;
-        println!("{}", v);
-        let mut content: String = String::from(v["choices"][0]["message"]["content"].as_str().unwrap());
-        content = content.replace("\n", "\n\r");
-        return Ok(content);   
+        // println!("{}", v);
+        if let Some(content) = v["choices"][0]["message"]["content"].as_str() {
+            return Ok(String::from(content));  
+        }
+        else {
+            return Err(Box::new(OPENAIError::new("Error message from openAI")));
+        } 
     }
 
 
@@ -111,7 +114,6 @@ struct Message {
 
 
 
-
 #[derive(Serialize, Deserialize, Debug)]
 enum ROLE {
     User,
@@ -125,5 +127,33 @@ impl ROLE {
             ROLE::Assistant => String::from("assistant"),
             ROLE::System => String::from("system"),
         }
+    }
+}
+
+
+
+use std::fmt;
+
+#[derive(Debug)]
+pub struct OPENAIError {
+    details: String
+}
+
+
+impl OPENAIError {
+    pub fn new(msg: &str) -> OPENAIError {
+        OPENAIError{details: msg.to_string()}
+    }
+}
+
+impl fmt::Display for OPENAIError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f,"{}",self.details)
+    }
+}
+
+impl Error for OPENAIError {
+    fn description(&self) -> &str {
+        &self.details
     }
 }
